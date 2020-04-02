@@ -1,4 +1,4 @@
-package String;
+package StringTest;
 
 import lombok.Data;
 import org.junit.Test;
@@ -97,6 +97,44 @@ public class Reverse {
             System.out.println();
         }
 
+        /**根据Int i来切割字符，前i个使用头插法。首先把p1指针指向头部，q指向头节点的下一个。而r主要作用就是存取q节点的下一个
+         * 将头节点的下一个节点清零，即切断了后面的链表。然后将q的下一个节点指向头即形成了2->1的链表
+         * 将此时的链表给p1,再将r给q跳转到下一个节点重复上面操作，将前n个链表反转并且存在p1中
+         *
+         * 进行第二步操作，将此时的q即位被反转的部分给p2,q继续跳转到下一个节点，p2的下一个节点清掉，后面链表被丢掉
+         * 其他操作与原来头插法相差无几
+         *
+         * 最后一步将头节点的head的下一个节点设置成p2,两个进行了反转的链表进行拼接，此时便可把完整的链表p1给head
+         *
+         *
+         */
+        public void reverse(int k){
+            int n =0;
+            Node p1,r,q,p2;
+            p1=head;
+            q=head.next;
+            head.next=null;
+            while (n++ < k-1 && q!=null){
+                r=q.next;
+                q.next=p1;
+                p1=q;
+                q=r;
+            }
+
+            p2 = q;
+            q=q.next;
+            p2.next=null;
+            while(q!=null){
+                r = q.next;
+                q.next=p2;
+                p2=q;
+                q=r;
+            }
+            head.next=p2;
+            head=p1;
+
+        }
+
     }
 
     @Test
@@ -107,5 +145,68 @@ public class Reverse {
             list.addNode(n);
         }
         list.print();
+
+        //假设此时K为3时候,看是否取值正确
+        list.reverse(4);
+        list.print();
+
+
+
     }
+
+    //思考二简单，只需要将输入改变为字符串长度-m即可
+    @Test
+    public void think02(){
+        StringBuilder s=new StringBuilder("Ilovebaofeng");
+        StringBuilder result = Reverse.reverse_02(s, s.length() - 7);
+        System.out.println(result);
+
+    }
+
+    //思考题三 一开始用split觉得太简单换 逆转法先识别出单词进行反转，在整个反转.
+    /**
+     *
+     */
+    @Test
+    public void think03(){
+        String s = "I am a student.";
+        String[] s1 = s.split(" ");
+        StringBuilder builder = new StringBuilder();
+        for (int i=s1.length-1;i>=0;i--){
+            if(i==0){
+                builder.append(s1[i]);
+            }else{
+                builder.append(s1[i]+" ");
+            }
+        }
+        System.out.println(builder);
+
+        char [] arr = s.toCharArray();
+        int begin=0,end=0;
+        for (int i =0;i<arr.length;i++){
+            end=i;
+            if(  i==arr.length-1 || arr[i+1] == ' '){
+                while (begin<end){
+                    char temp = arr[begin];
+                    arr[begin++] = arr[end];
+                    arr[end--] = temp;
+                }
+                begin=end=i+2;
+            }
+        }
+
+        begin=0;
+        end=arr.length-1;
+        while (begin<end){
+            char temp = arr[begin];
+            arr[begin++] = arr[end];
+            arr[end--] = temp;
+        }
+
+
+        String result = new String(arr);
+        System.out.println(result);
+
+    }
+
 }
