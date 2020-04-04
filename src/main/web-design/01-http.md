@@ -56,15 +56,15 @@ HTML的语法进行格式化，并在浏览器显示。
 
 >图解
 
-![](https://images2018.cnblogs.com/blog/877318/201804/877318-20180418160227278-698810818.png)
+![](https://raw.githubusercontent.com/SilentFlower/Program_Learning_Base/master/src/image/http_01.png)
 **HTTP协议是基于TCP/IP协议上的应用层协议**
 **基于 请求-响应的模式**
 
-![](https://images2018.cnblogs.com/blog/877318/201804/877318-20180418160433297-1726664935.png)
+![](https://raw.githubusercontent.com/SilentFlower/Program_Learning_Base/master/src/image/http_02.png)
 HTTP是一种不保存状态，即无状态`stateless`协议。HTTP协议本身不对请求和响应之间的
 通信状态进行保存。也就是HTTP不会对做持久化处理。
 
-![](https://images2018.cnblogs.com/blog/877318/201804/877318-20180418160546133-1479186889.png)
+![](https://raw.githubusercontent.com/SilentFlower/Program_Learning_Base/master/src/image/http_03.png)
 
 使用HTTP协议每当有新的请求发送时，就会有对应的新响应产生。
 协议本身并不保存之前的一切的请求和响应报文的信息。这样是为了快速的处理大量事务，
@@ -144,15 +144,15 @@ HTTP/101协议中预留给连接改成管道方式的代理服务器。通常用
 举例http://www.bilibili.com/video/bv17x411w7KC/?spm_id_from=333.788.b_636f6d6d656e74.14
 
 ## HTTP请求格式
-![](https://images2018.cnblogs.com/blog/867021/201803/867021-20180322001733298-201433635.jpg)
+![](https://raw.githubusercontent.com/SilentFlower/Program_Learning_Base/master/src/image/http_04.jfif)
 
 具体情况
-![](https://images2018.cnblogs.com/blog/877318/201804/877318-20180418160914403-902015370.png)
+![](https://raw.githubusercontent.com/SilentFlower/Program_Learning_Base/master/src/image/http_05.png)
 Context-Length的长度为请求数据里面的长度
 请求头中有一组键值对user-agent通常用来爬虫模仿浏览器进行活动所需要的。
 
 ## HTTP响应格式
-![](https://images2018.cnblogs.com/blog/867021/201803/867021-20180322001744323-654009411.jpg)
+![](https://raw.githubusercontent.com/SilentFlower/Program_Learning_Base/master/src/image/http_06.jfif)
 
 具体情况
-![](https://images2018.cnblogs.com/blog/877318/201804/877318-20180418161014087-738990087.png)
+![](https://raw.githubusercontent.com/SilentFlower/Program_Learning_Base/master/src/image/http_07.png)
