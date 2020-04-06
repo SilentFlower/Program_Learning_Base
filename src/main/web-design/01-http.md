@@ -156,3 +156,104 @@ Context-Length的长度为请求数据里面的长度
 
 具体情况
 ![](https://raw.githubusercontent.com/SilentFlower/Program_Learning_Base/master/src/image/http_07.png)
+
+## HTTP之Cookie和session
+由于HTTP是无状态协议，说明它不能以状态来区分和管理请求和响应，无法根据
+之前的状态进行本次的请求处理。为了解决网站内跳转请求问题，Cookie应运而生。
+
+Cookie技术通过在请求和响应报文中写入Cookie信息来孔子客户端的状态。
+Cookie会根据从服务器端发送的响应报文中Set-Cookie的首部字段信息，
+通知客户端保存Cookie。当下次客户端再往该服务器发送请求时，客户端会自动在请求报文
+中加入Cookie值发出去。
+
+服务器发现客户端发送过来的Cookie后，回去检查究竟是从哪一个客户端发来的请求，然后对比服务器上的记录，
+最后得到之前的状态信息。
+- 没有Cookie信息状态下的请求
+![](https://raw.githubusercontent.com/SilentFlower/Program_Learning_Base/master/src/image/cookie_01.png)
+
+- 第二次以后(存有Cookie信息状态)的请求
+![](https://raw.githubusercontent.com/SilentFlower/Program_Learning_Base/master/src/image/cookie_02.png)
+
+HTTP请求报文和响应报文如下
+
+1.未添加前
+```
+GET /reader/ HTTP/1.1
+Host: hack.jp
+*首部字段内每一偶Cookie的相关信息
+```
+```
+HTTP/1.1 200 OK
+Date: Thu, 12 Jul 2012 07:12:20 GMT
+Server: Apache
+<Set-Cookie: sid=1342077140226724; path=/; expires=web,
+10-Oct-12 07:12:20 GMT>
+Content-Type:text/plain;charset=UTF-8
+```
+
+2.第二次后保存后
+
+```
+GET /image/ HTTP/1.1
+Host: hackr.jp
+Cookie: sid=1342077140226724
+```
+
+### 关于Cookie的首部字段
+
+1.Set-Cookie 开始状态管理所使用的Cookie信息 响应首部字段
+- 详细
+![](https://raw.githubusercontent.com/SilentFlower/Program_Learning_Base/master/src/image/cookie_03.png)    
+##### 1.1 expires属性  
+Cookie的expires属性指定浏览器可以发送Cookie的有效期。
+当省略时默认浏览器关闭前有效。
+
+##### 1.2 path属性
+Cookie的path属性可以限制指定的Cookie的发送范围的文件目录。
+
+##### 1.3 domain属性
+通过Cookie的domain属性指定的域名可以做到与结尾匹配一致。
+
+##### 1.4 secure属性
+Cookie的secure属性用于限制Web页面仅在HTTPS安全连接时才可以发送Cookie。发送Cookie时，指定secure属性的方法如下   
+
+Set-Cookie:name=value;secure
+
+2.Cookie 服务器接收到的Cookie信息 请求首部字段
+
+##### 2.1 Cookie
+Cookie:status=enable
+首部字段Cookie会告知服务器，当客户端想要获得HTTP状态支持时，就会
+在请求中包含从服务器接收的Cookie。
+
+
+
+### Session
+在网络应用中，Session被称为会话控制。Session对象存储特定用户会话所需的属性及配置信息。
+
+当用户在应用程序的Web页之间跳转时。存储在Session对象中的变量将不会丢失，
+而是在整个用户会话中一直存在下去。
+
+Session对象还能够存储用户的行为习惯，例如用户指明不喜欢查看图形，则Session中
+可以将信息存入。
+
+###通过Cookie来管理Session
+基于表单认证的标准规范，一般会使用Cookie来管理Seesion(会话)。
+
+基于表单认证本身是通过服务端的Web应用，将客户端发送过来的用户ID和密码与之前登陆过的信息做匹配来进行认证。
+
+但鉴于HTTP是无状态协议，之前认证的用户状态无法通过协议层面保存下来。于是我们使用Cookie管理Session,以弥补HTTP协议中不存在的状态管理功能。
+![](https://raw.githubusercontent.com/SilentFlower/Program_Learning_Base/master/src/image/cookie_04.png)
+
+##Session 管理及Cookie状态管理具体步骤
+- 步骤一:客户端把用户ID和密码等登陆信息放入报文的实体部分，通常以POST方法请求发送给服务器。
+而这时，会使用HTTPS通信来进行HTML表单画面的显示和用户输入数据的发送。
+- 步骤二:服务器会发放用于识别用户的Session ID.通过验证从客户端发送过来的登陆信息进行身份认证，然后把用户的认证状态
+与Session ID绑定后记录在服务器。向客户端返回响应时，会在首部字段Set-Cookie写入Session ID(如PHPSESSID=2ewq...)。
+
+`可以将Session ID想象成一种用于区别不同用户的等位号。但为了防止Session被第三方盗走,Session应用了复杂加密，且服务器也需要进行
+有效期的管理，保证安全性`
+- 步骤三：客户端接收到从服务器端发出来的Session ID后，会将其作为Cookie保存到本地。下次向服务器发送请求时，
+浏览器会自动发送Cookie,所以Session ID也会随之发送到服务器。服务器可以通过验证接收到的Session ID识别用户和其认证状态。
+
+
